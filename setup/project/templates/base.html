@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}EJBC Home Page{% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Cinzel Decorative' rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet'>
+</head>
+<body>
+    <div class="navbar">
+        <a class="brand" href="/">EJBC</a>
+        <div class="total-balance">
+            <h2 class="balance">Total Balance</h2>
+            <h1 class="balance-amount">Rp 0</h1>
+        </div>
+        <a href="/">Transactions</a>
+        <a href="/payments">Payments</a>
+        <a href="/profile">Profile</a>
+    </div>
+
+    <div class="main">
+        {% block content %}
+        {% endblock %}
+    </div>
+</body>
+</html>
