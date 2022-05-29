@@ -1,15 +1,17 @@
-from django.urls import path
+from rest_framework import routers
+from django.urls import path, include
 from . import views
+
+router = routers.DefaultRouter()
+router.register(r'customers', views.CustomerViewSet)
+# router.register(r'users', views.RegistrationViewSet)
 
 urlpatterns = [
     path('', views.home),
     path('payments', views.payments),
     path('profile', views.profile),
-
-    path('camera', views.camera, name='camera'),
-    path('video_stream', views.video_stream, name='video_stream'),
-
-    # path('/sign-up', views.signup, name='signup'),
-    # path('/login', views.login, name='login'),
+    path('login', views.login),
+    path('register', views.register),
+    path('api', include(router.urls)),
 
 ]

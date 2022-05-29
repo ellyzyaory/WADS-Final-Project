@@ -1,5 +1,10 @@
 from django.http import StreamingHttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from rest_framework import viewsets
+
+from .models import Customers
+from .serializers import RegisterSerializer
+
 
 # Create your views here.
 
@@ -12,16 +17,15 @@ def payments(request):
 def profile(request):
     return render(request, 'profile.html')
 
-def camera(request):
-    return render(request, 'camera.html')
+def login(request):
+    return render(request, 'login.html')
 
-def gen(camera):
-    while True:
-        frame = camera.get_frame()
-        yield (b'--frame\r\n'
-                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
+def register(request):
+    return render(request, 'register.html')
 
-def video_stream(request):
-    from setup.project import camera
-    return StreamingHttpResponse(gen(camera.VideoCamera()),
-                    content_type='multipart/x-mixed-replace; boundary=frame')
+class CustomerViewSet (viewsets.ModelViewSet):
+    queryset = Customers.objects.all().order_by('first_name')
+    serializer_class = RegisterSerializer
+
+
+

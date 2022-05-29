@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}EJBC Register Page{% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" type="text/css">
+</head>
+<body>
+    <div>
+       {% block content %}
+            <h2 class="title-page">Register</h2>
+            <form class="register-form">
+                <input type="text" placeholder="Card Number">
+                <input type="password" placeholder="Pin">
+                <input type="text" placeholder="Username">
+                <input type="password" placeholder="Password">
+                <input type="password" placeholder="Confirm Password">
+                <button type="submit">Register</button>
+            </form>
+       {% endblock %}
+    </div>
+</body>
+</html>
