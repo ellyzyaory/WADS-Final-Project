@@ -5,18 +5,20 @@
     <title>{% block title %}EJBC Login Page{% endblock %}</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/styles.css' %}" type="text/css">
-</head>
+    <link href='https://fonts.googleapis.com/css?family=Cinzel Decorative' rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet'></head>
 <body>
-    <div class="container-page">
-       {% block content %}
-            <h2 class="title-page">Login</h2>
+    <div class="login-page">
+            <h2 class="brand-auth">EJBC</h2>
             <form class="form">
-                <input type="text" placeholder="Username">
+                <input type="text" placeholder="Email">
                 <input type="password" placeholder="Password">
                 <button type="submit">Login</button>
-
             </form>
-       {% endblock %}
+    </div>
+    <div class="go-to-sign-up">
+        <a href="/register" class="link">Don't have an account? <span>Sign up</span></div>
     </div>
 </body>
 </html>
