@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'project',
     'rest_framework',
+    'rest_framework.authtoken',
     'corsheaders',
     'knox',
 ]
@@ -98,8 +99,8 @@ WSGI_APPLICATION = 'setup.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'djangodatabase',
-        'USER': 'root',
+        'NAME': 'djangodb',
+        'USER': 'administration',
         'PASSWORD': 'password',
         'HOST': '127.0.0.1',
         'PORT': '3306',
@@ -155,3 +156,5 @@ MEDIA_ROOT = [
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTH_USER_MODEL = 'project.User'
