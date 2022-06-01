@@ -7,8 +7,10 @@ from django.shortcuts import render, redirect
 from rest_framework import viewsets, permissions, generics, status
 from rest_framework.views import APIView
 from .models import User, Transactions
-from .serializers import UserSerializer, CreateUserSerializer, TransactionSerializer
+from .serializers import UserSerializer, CreateUserSerializer, TransactionSerializer, LoginUserSerializer, User2Serializer
 from django.contrib.auth import login
+from knox.models import AuthToken
+from knox.auth import TokenAuthentication
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from knox.views import LoginView as KnoxLoginView
 from rest_framework.permissions import IsAuthenticated
@@ -54,9 +56,57 @@ class CreateUserView(APIView):
                             last_name=last_name, balance=balance, pin=pin)
                 user.set_password(password)
                 user.save()
-                return Response(UserSerializer(user).data, status=status.HTTP_201_CREATED)
-            else:
-                return Response(UserSerializer(status=status.HTTP_409_CONFLICT))
+                return Response({
+                    "users": UserSerializer(user).data,
+                    "token": AuthToken.objects.create(user)[1] 
+                }, status=status.HTTP_201_CREATED)
+                # return Response(UserSerializer(user).data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(UserSerializer(status=status.HTTP_409_CONFLICT))
+
+
+class LoginAPI(KnoxLoginView):
+    permission_classes = (permissions.AllowAny,)
+
+    def post(self, request, format=None):
+        serializer = LoginUserSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        if user.last_login is None :
+            user.first_login = True
+            user.save()
+            
+        elif user.first_login:
+            user.first_login = False
+            user.save()
+            
+        login(request, user)
+        return super().post(request, format=None)
+
+class UserAPI(generics.RetrieveAPIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = [permissions.IsAuthenticated, ]
+    serializer_class = UserSerializer
+
+    def get_object(self):
+        return self.request.user
+
+# class LoginAPI(KnoxLoginView):
+#     permission_classes = (permissions.AllowAny,)
+
+#     def post(self, request, format=None):
+#         serializer = AuthTokenSerializer(data=request.data)
+#         serializer.is_valid(raise_exception=True)
+#         user = serializer.validated_data['user']
+#         login(request, user)
+#         return super(LoginAPI, self).post(request, format=None)
+
+# class UserAPI(generics.RetrieveAPIView):
+#     permission_classes = [permissions.IsAuthenticated, ]
+#     serializer_class = UserSerializer
+
+#     def get_object(self):
+#         return self.request.user
 
 class TransactionView(APIView):
     serializer_class = TransactionSerializer

@@ -65,10 +65,11 @@ class User(AbstractBaseUser, PermissionsMixin):
             "Unselect this instead of deleting accounts."
         ),
     )
+    first_login = models.BooleanField(_("first login"), default=False)
     date_joined = models.DateTimeField(_("date joined"), default=timezone.now)
     email_verified = models.BooleanField(
         _('email verified'),
-        default=False,
+        default=True,
         help_text=_(
             "Designates whether this user's email is verified. "
         ),
